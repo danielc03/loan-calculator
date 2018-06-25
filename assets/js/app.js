@@ -1,5 +1,5 @@
 //  Listen for submit
-const calculateResults = (e) => {
+const calculateResults = () => {
     // UI Vars
     const amount = document.querySelector("#amount");
     const interest = document.querySelector("#interest");
@@ -21,13 +21,28 @@ const calculateResults = (e) => {
         monthlyPayment.value = monthly.toFixed(2);
         totalPayment.value = (monthly * calculatedPayments).toFixed(2);
         totalInterest.value = ((monthly * calculatedPayments) - principal).toFixed(2);
+
+        // Show results
+        document.querySelector("#results").style.display = "block";
+        // Hide spinner
+        document.querySelector("#loading").style.display = "none";
     } else {
         showError("Please check your numbers");
     }
-    e.preventDefault();
 }
 
-document.querySelector("#loan-form").addEventListener("submit", calculateResults);
+// Event listener to call the function
+document.querySelector("#loan-form").addEventListener("submit", (e) => {
+    // Hide results
+    document.querySelector("#results").style.display = "none";
+    
+    //Show loader 
+    document.querySelector("#loading").style.display = "block";
+
+    setTimeout(calculateResults, 2000);
+
+    e.preventDefault();
+});
 
 
 
@@ -50,13 +65,16 @@ const showError = (error) => {
 
     card.insertBefore(errorDiv, heading) // insert error before heading
 
+    // Hide loader if error
+    document.querySelector("#loading").style.display = "none";
+
     // Hide error on click
     const hideError = () => { 
         errorDiv.style.display = "none";
     }
     document.body.addEventListener("click", hideError);
     // If user doesn't click, set timeout to 5 seconds
-    setTimeout(hideError, 3000);
+    setTimeout(hideError, 4000);
 }
 
 
